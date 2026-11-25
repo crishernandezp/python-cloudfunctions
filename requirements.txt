@@ -1,3 +1,3 @@
 google-cloud-storage
 flask
-
+functions-framework==3.*
