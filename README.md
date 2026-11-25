@@ -101,4 +101,3 @@ Feel free to modify the functions or add new ones. Ensure to update `requirement
 ## License
 
 This project is licensed under the MIT License. See MIT License for details.
-
