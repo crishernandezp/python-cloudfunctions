@@ -1,10 +1,15 @@
+import functions_framework
 from google.cloud import storage
+from flask import Request
 
-def process_file(event, context):
+
+@functions_framework.cloud_event
+def process_file(cloud_event):
     """Triggered when a file is uploaded to Cloud Storage."""
+    event = cloud_event.data
     file_name = event['name']
     bucket_name = event['bucket']
-    
+
     print(f"File {file_name} uploaded to {bucket_name}. Processing...")
 
     storage_client = storage.Client()
@@ -15,14 +20,12 @@ def process_file(event, context):
     if file_name.endswith('.txt'):
         content = blob.download_as_text()
         print(f"File content: {content}")
-    
-    return f"Processed {file_name} successfully!"
-from flask import Request
 
+
+@functions_framework.http
 def http_hello_world(request: Request):
     """HTTP Function that responds with a greeting."""
     request_json = request.get_json(silent=True)
     name = request_json.get('name', 'World') if request_json else 'World'
-    
-    return f"Hello, {name} from Cloud Functions!", 200
 
+    return f"Hello, {name} from Cloud Functions!", 200
