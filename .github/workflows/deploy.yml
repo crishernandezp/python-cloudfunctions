@@ -25,9 +25,26 @@ jobs:
 
       - name: Deploy Cloud Function (Storage Trigger)
         run: |
-          gcloud functions deploy process_file --runtime python311 --trigger-resource ${{ vars.GCP_BUCKET_NAME }} --trigger-event google.storage.object.finalize --entry-point process_file --region us-central1 --allow-unauthenticated
+          gcloud functions deploy process_file \
+            --gen2 \
+            --runtime python311 \
+            --source . \
+            --trigger-bucket ${{ vars.GCP_BUCKET_NAME }} \
+            --trigger-location us-central1 \
+            --trigger-service-account 569625288688-compute@developer.gserviceaccount.com \
+            --entry-point process_file \
+            --region us-central1 \
+            --no-allow-unauthenticated \
+            --quiet
 
       - name: Deploy Cloud Function (HTTP Trigger)
         run: |
-          gcloud functions deploy http_hello_world --runtime python311 --trigger-http --entry-point http_hello_world --region us-central1 --allow-unauthenticated
-
+          gcloud functions deploy http_hello_world \
+            --gen2 \
+            --runtime python311 \
+            --source . \
+            --trigger-http \
+            --entry-point http_hello_world \
+            --region us-central1 \
+            --allow-unauthenticated \
+            --quiet
